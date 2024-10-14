@@ -1,0 +1,35 @@
+# manifests/namespaces.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argocd
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kuberay
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fastapi
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: minio
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: frontend
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mlflow
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: db

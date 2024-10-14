@@ -1,0 +1,31 @@
+mode: standalone
+accessKey: virtualminds
+secretKey: virtualminds
+
+persistence:
+  enabled: true
+  size: 1Gi
+
+replicas: 2
+
+resources:
+  requests:
+    memory: 512Mi
+  limits:
+    memory: 1Gi
+
+tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+
+service:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 9000
+      targetPort: 9000
+    - name: console
+      port: 9001
+      targetPort: 9001
+

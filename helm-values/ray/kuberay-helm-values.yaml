@@ -1,0 +1,49 @@
+image:
+  tag: "2.9.0-aarch64"  
+
+# Ray head node configuration
+head:
+  rayStartParams:
+    num-cpus: "2"
+    num-gpus: "0"
+  resources:
+    requests:
+      cpu: "2"
+      memory: "2Gi"
+    limits:
+      cpu: "4"
+      memory: "4Gi"
+  serviceAccountName: ""
+  env: []
+
+# Ray worker node configuration
+worker:
+  groupName: workergroup
+  replicas: 1
+  minReplicas: 1
+  maxReplicas: 2
+  rayStartParams:
+    num-cpus: "2"
+    num-gpus: "0"
+  resources:
+    requests:
+      cpu: "2"
+      memory: "2Gi"
+    limits:
+      cpu: "4"
+      memory: "4Gi"
+  env: []
+
+# Autoscaler configuration
+autoscaler:
+  enabled: true
+  config:
+    min_workers: 1
+    max_workers: 2
+    upscaling_speed: 1.0
+    idle_timeout_minutes: 5
+
+# Expose the Ray dashboard
+dashboard:
+  enabled: true
+  port: 8265

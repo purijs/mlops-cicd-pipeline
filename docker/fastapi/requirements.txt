@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+ray[data,train,tune,serve]==2.9
+minio
+pydantic
+joblib
+scikit-learn
+mlflow
+pandas
+s3fs
+APScheduler
+redis

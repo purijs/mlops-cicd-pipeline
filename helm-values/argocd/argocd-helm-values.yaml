@@ -1,0 +1,18 @@
+server:
+  service:
+    type: NodePort
+    nodePort: 8080
+    ports:
+      - port: 8080
+        targetPort: 8080
+        protocol: TCP
+  ingress:
+    enabled: true
+  extraArgs:
+    - --insecure
+
+configs:
+  secret:
+    admin:
+      password: $2a$12$KIXQx1b5o/lZ5jzG7R9Oge6.MxFvW3jjFR7P0n0IHTK7dPaHIrZV6
+
