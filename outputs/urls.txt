@@ -1,0 +1,9 @@
+KUBE DASHBOARD: http://localhost:8001
+ArgoCD DASHBOARD: http://localhost:8080
+MLFlow DASHBOARD: http://localhost:5555
+Frontend App: http://localhost:5001
+Ray DASHBOARD: http://localhost:8265
+Redis Endpoint: http://localhost:6379
+Minio CLI: http://localhost:9000
+Minio UI: http://localhost:9001
+FastAPI Swagger Endpoints: http://localhost:8888/docs

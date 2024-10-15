@@ -1,12 +1,14 @@
 mode: standalone
-accessKey: virtualminds
-secretKey: virtualminds
+
+existingSecret: minio-secret
+extraSecrets:
+  - name: minio-user-secret
 
 persistence:
   enabled: true
   size: 1Gi
 
-replicas: 2
+replicas: 1
 
 resources:
   requests:
@@ -29,3 +31,9 @@ service:
       port: 9001
       targetPort: 9001
 
+console:
+  enabled: true
+
+extraEnvFrom:
+  - secretRef:
+      name: minio-user-secret

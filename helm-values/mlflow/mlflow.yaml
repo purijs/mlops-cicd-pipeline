@@ -1,0 +1,8 @@
+mlflow:
+  server:
+    service:
+      type: NodePort
+      port: 5000
+    extraArgs:
+      - "--default-artifact-root"
+      - "s3://mlops/models"

@@ -24,6 +24,8 @@ from datetime import datetime, timedelta
 import uuid
 import asyncio
 from fastapi.middleware.cors import CORSMiddleware
+from minio import Minio
+from minio.error import S3Error
 
 app = FastAPI(title="MLOps FastAPI with Ray Jobs and MLflow")
 app.add_middleware(
@@ -73,7 +75,7 @@ scheduler = BackgroundScheduler()
 scheduler.start()
 
 # Shared message queue for SSE notifications
-redis_client = redis.StrictRedis(host='redis-master.default.svc.cluster.local', port=6379, db=0, decode_responses=True, password='redis')
+redis_client = redis.StrictRedis(host='redis-master.db.svc.cluster.local', port=6379, db=0, decode_responses=True, password='redis')
 
 # SSE endpoint
 @app.get("/webhook")
@@ -89,35 +91,53 @@ async def stream_webhook():
     # Return a streaming response for Server-Sent Events (SSE)
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 
-@ray.remote(num_cpus=1, memory=1000 * 1024 * 1024)
+# MinIo Init
+client = Minio(
+    endpoint=MINIO_ENDPOINT,
+    secure=False,
+    access_key=MINIO_ACCESS_KEY,
+    secret_key=MINIO_SECRET_KEY
+  )
+
+def init_mlflow(EXPERIMENT_NAME):
+    mlflow_client = MlflowClient(MLFLOW_TRACKING_URI)
+    experiment = mlflow_client.get_experiment_by_name(EXPERIMENT_NAME)
+    if experiment is None:
+        mlflow_client.create_experiment(EXPERIMENT_NAME, artifact_location='s3://mlops/models')
+        logger.info(f"Created MLflow experiment: {EXPERIMENT_NAME}")
+    elif experiment.lifecycle_stage == "deleted":
+        mlflow_client.restore_experiment(experiment.experiment_id)
+        logger.info(f"Restored MLflow experiment: {EXPERIMENT_NAME}")
+    else:
+        logger.info(f"MLflow experiment '{EXPERIMENT_NAME}' already exists.")
+
+@ray.remote(num_cpus=1, memory=1000 * 1024 * 1024, runtime_env={
+        "env_vars": {
+            "AWS_ACCESS_KEY_ID": "virtualminds",
+            "AWS_SECRET_ACCESS_KEY": "virtualminds",
+            "MLFLOW_S3_ENDPOINT_URL": "http://minio.minio.svc.cluster.local:9000",
+            "MLFLOW_S3_IGNORE_TLS": "true",
+            "MLFLOW_ARTIFACTS_DESTINATION":"s3://mlops/models"
+        }
+    })
 def train_model_remote(hyperparameters: Dict[str, Any], MLFLOW_TRACKING_URI: str, DEFINED_THRESHOLD: int):
     # Set MLflow tracking URI
-    redis_client = redis.StrictRedis(host='redis-master.default.svc.cluster.local', port=6379, db=0, decode_responses=True, password='redis')
+    redis_client = redis.StrictRedis(host='redis-master.db.svc.cluster.local', port=6379, db=0, decode_responses=True, password='redis')
 
-    print(hyperparameters)
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
     mlflow_client = MlflowClient(MLFLOW_TRACKING_URI)
     
     # Ensure the experiment exists and is active
     EXPERIMENT_NAME = "mlops_experiment"
     experiment = mlflow_client.get_experiment_by_name(EXPERIMENT_NAME)
-    if experiment is None:
-        experiment_id = mlflow_client.create_experiment(EXPERIMENT_NAME)
-        logger.info(f"Created MLflow experiment: {EXPERIMENT_NAME}")
-    elif experiment.lifecycle_stage == "deleted":
-        mlflow_client.restore_experiment(experiment.experiment_id)
-        experiment_id = experiment.experiment_id
-        logger.info(f"Restored MLflow experiment: {EXPERIMENT_NAME}")
-    else:
-        experiment_id = experiment.experiment_id
-        logger.info(f"MLflow experiment '{EXPERIMENT_NAME}' already exists.")
+    experiment_id = experiment.experiment_id
 
     # Set the experiment
     mlflow.set_experiment(EXPERIMENT_NAME)
     
     # Load data from MinIO
     try:
-        df = pd.read_csv('s3://mlopsvirtualminds/data/iris.csv')
+        df = pd.read_csv('s3://mlops/data/iris.csv', storage_options={'key': 'virtualminds','secret': 'virtualminds','client_kwargs': {'endpoint_url': 'http://minio.minio.svc.cluster.local:9000'}})
         logger.info("Data loaded successfully from MinIO.")
     except Exception as e:
         logger.error(f"Failed to load data from MinIO: {e}")
@@ -182,8 +202,6 @@ def train_model_remote(hyperparameters: Dict[str, Any], MLFLOW_TRACKING_URI: str
         model_version_registered = latest_versions[0].version
         logger.info(f"Model version registered: {model_version_registered}")
 
-        ray.shutdown()
-
 '''
 @ray.remote(num_cpus=0.25, memory=500 * 1024 * 1024)
 def perform_inference_remote(input_data: List[float], MLFLOW_TRACKING_URI: str):
@@ -212,7 +230,7 @@ def watch_model(minutes: int, MLFLOW_TRACKING_URI: str):
     Remote function to watch MLFlow models
     """
 
-    redis_client = redis.StrictRedis(host='redis-master.default.svc.cluster.local', 
+    redis_client = redis.StrictRedis(host='redis-master.db.svc.cluster.local', 
                                      port=6379, db=0, decode_responses=True, 
                                      password='redis')
     
@@ -367,3 +385,4 @@ async def get_metrics():
 def health():
     return {"status": "Gesund!"}
 
+init_mlflow("mlops_experiment")
