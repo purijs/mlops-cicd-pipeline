@@ -1,6 +1,17 @@
 
 # MLOps Infrastructure with Kubernetes, Helm, ArgoCD, and Ray
 
+Live URLs :
+
+Sample data is already loaded into `s3://mlops/data/` at the Minio URL
+
+*[ArgoCD DASHBOARD](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:8081): View FastAPI Deployment
+*[MLFlow DASHBOARD](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:5556): View ML model details
+*[Frontend App](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:5002): Visualise Metrics and Get Alerts
+*[Ray DASHBOARD](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:8266): View Training/Serving Jobs
+*[Minio UI](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:9002): S3 Replica
+*[FastAPI Swagger Endpoints](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:8889/docs): Interact With Endpoints
+
 ## Overview
 
 This repository provides an end-to-end MLOps infrastructure setup, automating the deployment of a Kubernetes cluster using KIND (Kubernetes in Docker) and deploying various services such as FastAPI, KubeRay, ArgoCD, MinIO, MLflow, and more. The infrastructure is designed to support machine learning workflows, including model training, deployment, monitoring, and serving, using tools like Ray, MLflow, and MinIO.
@@ -149,11 +160,11 @@ kubectl exec -it {any-fastapi-pod-name} -n fastapi -- python /var/task/fastapi/s
 The FastAPI application provides several endpoints:
 
 *   **`/trigger_training`**: Triggers a model training job.
-*   **`/inference`**: Performs model inference.
+*   **`/inference`**: Performs model inference. (Required to run `serve.py` before invoking)
 *   **`/schedule_training`**: Schedules periodic model training.
-*   **`/watch_model`**: Watches the model for updates and sends alerts.
+*   **`/watch_model`**: Watches the model for updates and sends alerts. Useful to know if model hasn't been trained for `n` minutes
 *   **`/kill_scheduled_job/{job_id}`**: Cancels a scheduled job.
-*   **`/get_metrics`**: Retrieves metrics for the latest model and averages.
+*   **`/get_metrics`**: Retrieves metrics for the latest model and averages of past week
 *   **`/webhook`**: Server-Sent Events endpoint for real-time updates.
 
 ### Training a Model
