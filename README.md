@@ -243,25 +243,40 @@ To retrieve model metrics, send a GET request to `/get_metrics`.
 
 Ensure you have the following tools installed on your Mac M2:
 
-*   **Homebrew**: Package manager for macOS.
 *   **Docker**: For running containers.
 *   **Kubernetes CLI (kubectl)**: For interacting with Kubernetes clusters.
 *   **Helm**: Package manager for Kubernetes.
 *   **Kind**: Tool for running local Kubernetes clusters using Docker containers.
 *   **Git**: Version control system.
 
-#### Install Homebrew
-
-If you don't have Homebrew installed, run:
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
 #### Install Required Tools
 
-Install the necessary tools using Homebrew:
+MAC OS
 
 `brew install kubectl helm kind docker git`
+
+Ubuntu OS
+
+*   Install [docker](https://docs.docker.com/engine/install/ubuntu/)
+*   Install `kubectl`
+```
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+chmod +x kubectl
+mv ./kubectl ~/.local/bin/kubectl
+```
+*   Install `KIND`
+```
+[ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-arm64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+```
+*    Install `helm`
+```
+wget https://get.helm.sh/helm-v3.16.2-linux-amd64.tar.gz
+tar -zxvf helm-v3.16.2-linux-amd64.tar.gz
+mv linux-amd64/helm /usr/local/bin/helm
+```
 
 ### Running the `init.sh` Script
 ```   
