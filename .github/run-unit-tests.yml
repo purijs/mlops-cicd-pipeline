@@ -1,0 +1,38 @@
+# .github/workflows/run-unit-tests.yml
+
+name: Run Unit Tests
+
+# Trigger the workflow on push or pull request to the main branch
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Python environment
+    - name: Set Up Python 3.12
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    # Step 3: Install dependencies
+    - name: Install Dependencies
+      run: |
+        cd docker/backend/fastapi/
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # Step 4: Run Unit Tests
+    - name: Run Unit Tests
+      run: |
+        cd docker/backend/fastapi/
+        python test_ci_unittests.py
