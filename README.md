@@ -36,7 +36,7 @@ This repository provides an end-to-end MLOps infrastructure setup, automating th
 
 ## Features
 
-*   **Automated Cluster Setup**: Automated creation and configuration of a KIND Kubernetes cluster on Mac M2 chip.
+*   **Automated Cluster Setup**: Automated creation and configuration of a KIND Kubernetes cluster on ARM64 chip.
 *   **Containerized Applications**: Dockerized FastAPI application and frontend for model training and inference.
 *   **Distributed Computing**: Integration with Ray and KubeRay for distributed computing and model serving.
 *   **CI/CD with ArgoCD**: Continuous integration and deployment using ArgoCD for application deployment.
