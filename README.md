@@ -330,7 +330,7 @@ After the script completes, you can access the services as described in the **Ho
 
 *   **Purpose**: Implements GitOps continuous delivery, automating the deployment of the FastAPI application from the Git repository.
 *   **Interconnections**:
-    *   **Kubernetes**: Manages the deployment of the FastAPI application to the cluster.
+    *   **Kubernetes**: Manages the deployment of the FastAPI application to the cluster. The manifest is pulled from GIT `https://github.com/purijs/mlops`
     *   **Git Repository**: Monitors the repository for changes and synchronizes the application state.
 
 ### Frontend Application
@@ -339,6 +339,8 @@ After the script completes, you can access the services as described in the **Ho
 *   **Interconnections**:
     *   **Redis**: Subscribes to messages for displaying alerts.
     *   **FastAPI**: May interact with FastAPI endpoints to fetch metrics.
+
+Sample GIT workflows are integrated for connecting building of Docker files for integration with ArgoCD pipeline
 
 ---
 
