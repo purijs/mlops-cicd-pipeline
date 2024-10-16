@@ -48,6 +48,7 @@ MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY")
 MINIO_BUCKET = "mlops"
 DATA_PATH = "s3://mlops/data/iris.csv"
 
+# Ray Connection
 ray.init(address=RAY_ADDRESS, ignore_reinit_error=True,
          _system_config={"allow_multiple": True},
          runtime_env={
@@ -60,8 +61,8 @@ class ScheduleTrainingRequest(BaseModel):
     hyperparameters: Dict[str, Any]
 
 class InferenceRequest(BaseModel):
-    input_data: List[float]  # Define according to your model's input
-    model_version: Optional[str] = None  # e.g., "1"
+    input_data: List[float]
+    model_version: Optional[str] = None
     retries: Optional[int] = 3
     sla_seconds: Optional[int] = 60
 
@@ -82,13 +83,12 @@ redis_client = redis.StrictRedis(host='redis-master.db.svc.cluster.local', port=
 async def stream_webhook():
     async def event_generator():
         while True:
-            # Check if there are any messages in the queue
             message = redis_client.lpop('message_queue')
             if message:
                 yield f"data: {message}\n\n"
             await asyncio.sleep(1)  # Prevent busy-waiting
 
-    # Return a streaming response for Server-Sent Events (SSE)
+    # Return a streaming response
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 
 # MinIo Init
