@@ -31,7 +31,6 @@
     </div>
 
     <script>
-        // Fetch metrics from FastAPI
         async function fetchMetrics() {
             try {
                 const response = await fetch('http://localhost:8888/get_metrics');
@@ -78,9 +77,9 @@
             alertBox.classList.add('alert-success');
         }
 
-        // Simulated listener for the FastAPI webhook
+        // listener for the FastAPI webhook
         function listenForWebhook() {
-            const webhookURL = 'http://localhost:8888/webhook'; // Simulate this URL
+            const webhookURL = 'http://localhost:8888/webhook';
             const eventSource = new EventSource(webhookURL); // Use EventSource to listen
 
             eventSource.onmessage = function (event) {
