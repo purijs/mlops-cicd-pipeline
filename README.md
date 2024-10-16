@@ -1,6 +1,15 @@
 
 # MLOps Infrastructure with Kubernetes, Helm, ArgoCD, and Ray
 
+<p align="center">
+  <img width="600" src="images/banner.png" alt="Terrain Mapper Screenshot"/>
+  <p align="center">A FastAPI application for terrain mapping and analysis</p>
+</p>
+
+---
+`Note: Infrastructure is tested and built only for arm64 system. Live application uses an arm64 EC2 Ubuntu machine`
+---
+
 ### Live Application
 
 Sample data is already loaded into `s3://mlops/data/` at the Minio URL
@@ -323,3 +332,53 @@ After the script completes, you can access the services as described in the **Ho
     *   **FastAPI**: May interact with FastAPI endpoints to fetch metrics.
 
 ---
+
+## Screenshots
+
+*  ArgoCD showing FastAPI deplyoment
+<p align="center">
+  <img width="600" src="images/argo_cd.png" alt="Terrain Mapper Screenshot"/>
+  <p align="center">A FastAPI application for terrain mapping and analysis</p>
+</p>
+
+*  Model artifacts on Minio (S3)
+<p align="center">
+  <img width="600" src="images/artifacts.png" alt="Terrain Mapper Screenshot"/>
+  <p align="center">A FastAPI application for terrain mapping and analysis</p>
+</p>
+
+*  Frontend Alert: Model not trained for `x` minutes
+<p align="center">
+  <img width="600" src="images/fe_alert_1.png" alt="Terrain Mapper Screenshot"/>
+  <p align="center">A FastAPI application for terrain mapping and analysis</p>
+</p>
+
+*  Frontend Alert: Model achieves more than 90% accuracy
+<p align="center">
+  <img width="600" src="images/fe_alert_2.png" alt="Terrain Mapper Screenshot"/>
+  <p align="center">A FastAPI application for terrain mapping and analysis</p>
+</p>
+
+*  MLFlow Model Logging
+<p align="center">
+  <img width="600" src="images/mlflow_artifacts.png" alt="Terrain Mapper Screenshot"/>
+  <p align="center">A FastAPI application for terrain mapping and analysis</p>
+</p>
+
+*  MLFlow Experiment Logging
+<p align="center">
+  <img width="600" src="images/mlflow.png" alt="Terrain Mapper Screenshot"/>
+  <p align="center">A FastAPI application for terrain mapping and analysis</p>
+</p>
+
+*  Ray Jobs
+<p align="center">
+  <img width="600" src="images/ray_jobs.png" alt="Terrain Mapper Screenshot"/>
+  <p align="center">A FastAPI application for terrain mapping and analysis</p>
+</p>
+
+*  Ray Serve (Model Inference)
+<p align="center">
+  <img width="600" src="images/ray_serve.png" alt="Terrain Mapper Screenshot"/>
+  <p align="center">A FastAPI application for terrain mapping and analysis</p>
+</p>
