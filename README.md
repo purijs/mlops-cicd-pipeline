@@ -7,7 +7,9 @@
 </p>
 
 ---
+
 `Note: Infrastructure is tested and built only for arm64 system. Live application uses an arm64 EC2 Ubuntu machine`
+
 ---
 
 ### Live Application
@@ -24,6 +26,13 @@ Sample data is already loaded into `s3://mlops/data/` at the Minio URL
 ## Overview
 
 This repository provides an end-to-end MLOps infrastructure setup, automating the deployment of a Kubernetes cluster using KIND (Kubernetes in Docker) and deploying various services such as FastAPI, KubeRay, ArgoCD, MinIO, MLflow, and more. The infrastructure is designed to support machine learning workflows, including model training, deployment, monitoring, and serving, using tools like Ray, MLflow, and MinIO.
+
+## Architecture
+
+<p align="center">
+  <img width="600" src="images/architecture.png" alt="architecture data flow"/>
+  <p align="center">Click To Expand</p>
+</p>
 
 ## Features
 
