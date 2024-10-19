@@ -12,17 +12,6 @@
 
 ---
 
-### Live Application
-
-Sample data is already loaded into `s3://mlops/data/` at the Minio URL
-
-*   [ArgoCD DASHBOARD](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:8081): View FastAPI Deployment `user/pass: admin/bs8uLQfG1EmlWfj-`
-*   [MLFlow DASHBOARD](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:5556): View ML model details
-*   [Frontend App](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:5002): Visualise Metrics and Get Alerts
-*   [Ray DASHBOARD](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:8266): View Training/Serving Jobs
-*   [Minio UI](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:9002): S3 Replica `user/pass: virtualminds/virtualminds`
-*   [FastAPI Swagger Endpoints](http://ec2-3-73-69-105.eu-central-1.compute.amazonaws.com:8889/docs): Interact With Endpoints
-
 ## Overview
 
 This repository provides an end-to-end MLOps infrastructure setup, automating the deployment of a Kubernetes cluster using KIND (Kubernetes in Docker) and deploying various services such as FastAPI, KubeRay, ArgoCD, MinIO, MLflow, and more. The infrastructure is designed to support machine learning workflows, including model training, deployment, monitoring, and serving, using tools like Ray, MLflow, and MinIO.
