@@ -113,8 +113,8 @@ def init_mlflow(EXPERIMENT_NAME):
 
 @ray.remote(num_cpus=1, memory=1000 * 1024 * 1024, runtime_env={
         "env_vars": {
-            "AWS_ACCESS_KEY_ID": "virtualminds",
-            "AWS_SECRET_ACCESS_KEY": "virtualminds",
+            "AWS_ACCESS_KEY_ID": "",
+            "AWS_SECRET_ACCESS_KEY": "",
             "MLFLOW_S3_ENDPOINT_URL": "http://minio.minio.svc.cluster.local:9000",
             "MLFLOW_S3_IGNORE_TLS": "true",
             "MLFLOW_ARTIFACTS_DESTINATION":"s3://mlops/models"
